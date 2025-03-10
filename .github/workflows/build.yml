@@ -17,6 +17,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+    
+    - name: Install Docker Scout
+      run: |
+        curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+        sh install-scout.sh
+        docker scout version  # Verify installation
 
     - name: Build Docker image
       run: |
@@ -27,10 +33,7 @@ jobs:
 
     - name: Push Docker image
       run: docker push orkeilius/voting-app:${{ github.sha }}
-    
-    - name: Install Docker Scout
-      run: curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh
-      
+  
     - name: Docker Scout
       run: docker scout cves orkeilius/voting-app:${{ github.sha }}
 
